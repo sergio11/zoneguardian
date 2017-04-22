@@ -76,3 +76,21 @@ LINES TERMINATED by '\n';
 INSERT OVERWRITE TABLE eventsgranularreport
 select Year,Month,Day,Event,Count(*) Occurrence from SysLogEvents group by year,month,day,event order by event asc,year,month,day desc;
 ``
+## Oozie commands
+
+1. Submit job
+
+``oozie job -oozie http://localhost:11000/oozie -config /home/sergio/git/hadoop_samples/hadoop_examples/src/main/java/org/sanchez/sergio/hadoop_examples/oozie/workflowSqoopAction/job.properties -submit``
+
+`` job: 0000000-170414210219841-oozie-serg-W ``
+
+2. Run job.
+
+`` oozie job -oozie http://localhost:11000/oozie -start 0000000-170414210219841-oozie-serg-W ``
+
+3. Check the status.
+
+
+
+
+
