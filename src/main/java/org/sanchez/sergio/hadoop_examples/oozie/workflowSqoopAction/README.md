@@ -80,15 +80,14 @@ select Year,Month,Day,Event,Count(*) Occurrence from SysLogEvents group by year,
 
 1. Submit job
 
-``oozie job -oozie http://localhost:11000/oozie -config /home/sergio/git/hadoop_samples/hadoop_examples/src/main/java/org/sanchez/sergio/hadoop_examples/oozie/workflowSqoopAction/job.properties -submit``
+``oozie job -oozie http://sergio-desktop:11000/oozie -config /home/sergio/git/hadoop_samples/hadoop_examples/src/main/java/org/sanchez/sergio/hadoop_examples/oozie/workflowSqoopAction/job.properties -submit``
 
 `` job: 0000000-170414210219841-oozie-serg-W ``
 
 2. Run job.
 
-`` oozie job -oozie http://localhost:11000/oozie -start 0000000-170414210219841-oozie-serg-W ``
+`` oozie job -oozie http://sergio-desktop:11000/oozie -start 0000000-170414210219841-oozie-serg-W ``
 
-3. Check the status.
 
 
 
