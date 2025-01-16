@@ -8,3 +8,4 @@ langchain-huggingface==0.0.3
 faiss-cpu==1.9.0
 fpdf2==2.8.1
 tqdm==4.67.1
+python-whois==0.9.5

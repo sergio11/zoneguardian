@@ -5,6 +5,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
 from zoneguardian.core.security_analyzer import DNSVulnerabilityAnalyzer
 from zoneguardian.utils.logger import appLogger
+import whois
+from zoneguardian import __version__
 
 class ZoneGuardian:
     """
@@ -37,12 +39,14 @@ class ZoneGuardian:
             - `resolver`: Instance of `dns.resolver.Resolver` for performing DNS lookups.
             - `analyzer`: Instance of the `DNSVulnerabilityAnalyzer` class for vulnerability analysis.
         """
+        self._print_banner()
         self._record_types = [
             "A", "AAAA", "AFSDB", "CAA", "CNAME", "MX", "NS", "SOA", "TXT",
             "PTR", "SRV", "SSHFP", "TLSA", "DS", "DNSKEY", "NSEC", "NSEC3"
         ]
         self.resolver = dns.resolver.Resolver()
         self.analyzer = DNSVulnerabilityAnalyzer()
+
 
     def _resolve_records(self, domain):
         """
@@ -77,6 +81,31 @@ class ZoneGuardian:
                 return None
         except Exception as e:
             return None
+        
+    def _get_whois_information(self, domain):
+        """
+        Retrieves and returns the WHOIS information for a specified domain.
+
+        Args:
+            domain (str): The domain name for which WHOIS information is requested.
+
+        Returns:
+            whois.parser.WhoisEntry: Object containing the WHOIS information of the domain.
+        
+        Raises:
+            whois.exceptions.WhoisCommandFailed: If the WHOIS query fails.
+            ValueError: If the domain name is invalid or empty.
+        """
+        if not domain:
+            raise ValueError("Domain name cannot be empty.")
+
+        try:
+            # Perform the WHOIS query
+            response = whois.whois(domain)
+            return response
+        except Exception as e:
+            appLogger.error(f"Error retrieving WHOIS information for domain {domain}: {e}")
+            raise
 
     def analyze_domains(self, domains, threads=10, json_output_file="zoneguardian_results.json", pdf_output_file="zoneguardian_report.pdf"):
         """
@@ -95,6 +124,10 @@ class ZoneGuardian:
                 zone_data = self._perform_zone_transfer(domain)
                 if zone_data:
                     results['zone_data'] = zone_data.splitlines()
+                
+                whois_info = self._get_whois_information(domain)
+                if whois_info:
+                    results['WHOIS'] = whois_info
                 all_results[domain] = results
 
         appLogger.info("🔍 Analyzing vulnerabilities based on DNS scan results...")
@@ -102,3 +135,26 @@ class ZoneGuardian:
 
         appLogger.info(f"✅ Inspection process completed. Results saved to {json_output_file} and report generated as {pdf_output_file}")
         return all_results
+    
+    def _print_banner(self):
+        """
+        Prints a welcome banner at the start of the program for Zoneguardian.
+        """
+        banner = f"""
+        ███████╗ ██████╗ ███╗   ██╗███████╗                            
+        ╚══███╔╝██╔═══██╗████╗  ██║██╔════╝                            
+        ███╔╝ ██║   ██║██╔██╗ ██║█████╗                              
+        ███╔╝  ██║   ██║██║╚██╗██║██╔══╝                              
+        ███████╗╚██████╔╝██║ ╚████║███████╗                            
+        ╚══════╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝                            
+                                                                        
+        ██████╗ ██╗   ██╗ █████╗ ██████╗ ██████╗ ██╗ █████╗ ███╗   ██╗
+        ██╔════╝ ██║   ██║██╔══██╗██╔══██╗██╔══██╗██║██╔══██╗████╗  ██║
+        ██║  ███╗██║   ██║███████║██████╔╝██║  ██║██║███████║██╔██╗ ██║
+        ██║   ██║██║   ██║██╔══██║██╔══██╗██║  ██║██║██╔══██║██║╚██╗██║
+        ╚██████╔╝╚██████╔╝██║  ██║██║  ██║██████╔╝██║██║  ██║██║ ╚████║
+        ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝
+                                                                                              
+        ZoneGuardian: Your First Line of Defense in DNS Security. (Version: {__version__})
+        """
+        print(banner)

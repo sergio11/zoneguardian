@@ -90,10 +90,10 @@ class DNSVulnerabilityAnalyzer:
 
     def _format_report(self, scan_results: dict):
         """
-        Formats the DNS scan results into a structured report for Langchain processing.
+        Formats the DNS scan results, including WHOIS data, into a structured report for Langchain processing.
 
         Args:
-            scan_results (dict): The DNS scan results obtained.
+            scan_results (dict): The DNS scan results, including DNS records and WHOIS data.
 
         Returns:
             str: A formatted text report ready to be included in the PDF.
@@ -107,14 +107,22 @@ class DNSVulnerabilityAnalyzer:
             
             for record_type, record_value in records.items():
                 if record_type == "zone_data":
-                    report.append(f"  {record_type}:\n")
+                    report.append(f"  Zone Data:\n")
                     for line in record_value:
                         report.append(f"    - {line}")
+                elif record_type == "WHOIS":
+                    report.append(f"  WHOIS Information:\n")
+                    for key, value in record_value.items():
+                        if isinstance(value, list):
+                            report.append(f"    {key.capitalize()}:")
+                            for item in value:
+                                report.append(f"      - {item}")
+                        elif value:
+                            report.append(f"    {key.capitalize()}: {value}")
                 else:
                     report.append(f"  {record_type}: {record_value}\n")
-            
-            formatted_report = "\n".join(report)
-        return formatted_report
+
+        return "\n".join(report)
 
     def _split_log_into_chunks(self, content: str):
         """
