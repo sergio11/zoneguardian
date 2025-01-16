@@ -74,7 +74,57 @@ ZoneGuardian follows a systematic approach to DNS vulnerability analysis:
 - **Proactive Security**: Stay ahead of attackers by uncovering vulnerabilities early.  
 - **AI-Powered Insights**: Leverage intelligent analysis to prioritize actions.  
 - **Clear & Professional Reports**: Enable informed decision-making with well-structured outputs.  
-- **User-Friendly Design**: Simplifies complex security audits for efficient results.  
+- **User-Friendly Design**: Simplifies complex security audits for efficient results.
+
+# 🚀 Parameters and Options for ZoneGuardian Script
+
+The ZoneGuardian script offers customizable parameters to tailor the DNS vulnerability analysis process. Below is a detailed guide:  
+
+| **🔧 Parameter**    | **🛠️ Type**  | **📦 Default Value**        | **📋 Description**                                                                                         | **💡 Example Usage**                          |
+|----------------------|-------------|-----------------------------|-------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
+| `--domains`          | `str`       | **Required**                | 🌐 A comma-separated list of domains to scan for vulnerabilities.                                           | `--domains example.com,example2.com`         |
+| `--threads`          | `int`       | `10`                        | ⚡ Number of threads for parallel processing. Improves performance when scanning multiple domains.           | `--threads 20`                                |
+| `--output-json`      | `str`       | `zoneguardian_results.json` | 📄 File path to save detailed DNS scan results in JSON format.                                              | `--output-json results/my_results.json`      |
+| `--output-pdf`       | `str`       | `zoneguardian_report.pdf`   | 📊 File path to save the vulnerability analysis report in PDF format.                                       | `--output-pdf reports/my_report.pdf`         |
+
+
+### 📋 Detailed Parameter Descriptions
+
+1. **🌐 `--domains` (Required)**  
+   Specifies the domains to be scanned.  
+   - Example: `--domains example.com,example2.com`  
+   - **Note**: Separate domains with commas, without spaces.
+
+2. **⚡ `--threads`**  
+   Sets the number of threads for parallel processing.  
+   - Default: `10`  
+   - A higher value speeds up the scan for multiple domains but may increase CPU usage.  
+   - Example: `--threads 20`  
+
+3. **📄 `--output-json`**  
+   Defines the file path for saving detailed JSON results.  
+   - Default: `zoneguardian_results.json`  
+   - Includes all analyzed DNS records and WHOIS data.  
+   - Example: `--output-json results/my_results.json`  
+
+4. **📊 `--output-pdf`**  
+   Defines the file path for saving the final PDF report.  
+   - Default: `zoneguardian_report.pdf`  
+   - Contains an executive summary, vulnerability classification, and recommendations.  
+   - Example: `--output-pdf reports/my_report.pdf`  
+
+### ✅ Usage Example
+
+To scan two domains (`example.com` and `test.com`), using 15 threads, and save results in custom files:  
+
+```bash
+python zoneguardian.py --domains example.com,test.com --threads 15 --output-json results.json --output-pdf report.pdf
+```
+
+### 📌 Notes
+Ensure all dependencies are installed before running the script.
+* The --domains parameter is mandatory; the script will not execute without it.
+* Customize the output paths to prevent overwriting existing files.
 
 ## 🛡️ Legal
 
