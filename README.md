@@ -15,7 +15,7 @@ ZoneGuardian is a cutting-edge cybersecurity tool designed to **inspect DNS conf
 </p>
 
 <p align="center">
-  <img src="doc/screenshots/picture_1.PNG" />
+  <img src="doc/picture_1.PNG" />
 </p>
 
 ## 🌟 **Explore My Other Open-Source Ethical Hacking Tools**
