@@ -1,26 +1,48 @@
 import dns.resolver
 import dns.exception
 import subprocess
-import json
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
+from zoneguardian.core.security_analyzer import DNSVulnerabilityAnalyzer
 from zoneguardian.utils.logger import appLogger
 
 class ZoneGuardian:
     """
-    ZoneGuardian: A professional tool for inspecting and analyzing DNS records
-    to identify potential vulnerabilities or misconfigurations.
+    The ZoneGuardian class is responsible for inspecting and analyzing DNS records to identify potential vulnerabilities.
+    
+    This class supports a variety of DNS record types and integrates with the `DNSVulnerabilityAnalyzer` class to perform security analysis on the DNS records it retrieves.
+
+    Attributes:
+        _record_types (list): A list of DNS record types that will be inspected during the analysis.
+        resolver (dns.resolver.Resolver): The DNS resolver used to query DNS records from different domains.
+        analyzer (DNSVulnerabilityAnalyzer): An instance of the DNSVulnerabilityAnalyzer class used for analyzing vulnerabilities in the DNS data.
     """
 
     def __init__(self):
         """
         Initializes the ZoneGuardian class for DNS inspection.
+
+        This constructor sets up the following:
+        - Defines the list of DNS record types that are subject to inspection.
+        - Initializes the DNS resolver for querying DNS records.
+        - Initializes the DNSVulnerabilityAnalyzer for analyzing DNS vulnerabilities.
+
+        The constructor does the following:
+        - Sets up the `_record_types` attribute, which includes a predefined list of DNS record types to inspect.
+        - Initializes the `dns.resolver.Resolver()` object for performing DNS lookups.
+        - Creates an instance of `DNSVulnerabilityAnalyzer` to analyze any vulnerabilities in the retrieved DNS records.
+
+        Attributes initialized:
+            - `_record_types`: List of supported DNS record types.
+            - `resolver`: Instance of `dns.resolver.Resolver` for performing DNS lookups.
+            - `analyzer`: Instance of the `DNSVulnerabilityAnalyzer` class for vulnerability analysis.
         """
         self._record_types = [
             "A", "AAAA", "AFSDB", "CAA", "CNAME", "MX", "NS", "SOA", "TXT",
             "PTR", "SRV", "SSHFP", "TLSA", "DS", "DNSKEY", "NSEC", "NSEC3"
         ]
         self.resolver = dns.resolver.Resolver()
+        self.analyzer = DNSVulnerabilityAnalyzer()
 
     def _resolve_records(self, domain):
         """
@@ -56,26 +78,27 @@ class ZoneGuardian:
         except Exception as e:
             return None
 
-    def analyze_domains(self, domains, json_output_file="zoneguardian_results.json"):
+    def analyze_domains(self, domains, threads=10, json_output_file="zoneguardian_results.json", pdf_output_file="zoneguardian_report.pdf"):
         """
-        Analyzes the DNS records for the provided list of domains in parallel and saves the results to a JSON file.
+        Analyzes the DNS records for the provided list of domains in parallel and generates a security report.
         """
         appLogger.info("🚀 Starting ZoneGuardian inspection for multiple domains in parallel.")
         all_results = {}
 
-        with ThreadPoolExecutor(max_workers=10) as executor:
+        with ThreadPoolExecutor(max_workers=threads) as executor:
             futures = {executor.submit(self._resolve_records, domain): domain for domain in domains}
             
             for future in tqdm(as_completed(futures), total=len(futures), desc="Resolving Domains", ncols=100):
                 domain, results = future.result()
                 
+                # Perform zone transfer if possible
                 zone_data = self._perform_zone_transfer(domain)
                 if zone_data:
-                    results['zone_data'] = zone_data
+                    results['zone_data'] = zone_data.splitlines()
                 all_results[domain] = results
 
-        with open(json_output_file, "w") as json_file:
-            json.dump(all_results, json_file, indent=4)
-        
-        appLogger.info(f"✅ Inspection process completed. Results saved to {json_output_file}")
+        appLogger.info("🔍 Analyzing vulnerabilities based on DNS scan results...")
+        self.analyzer.generate_report(scan_results=all_results, pdf_path=pdf_output_file, json_path=json_output_file)
+
+        appLogger.info(f"✅ Inspection process completed. Results saved to {json_output_file} and report generated as {pdf_output_file}")
         return all_results
