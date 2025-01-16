@@ -41,7 +41,11 @@ These tools are designed to streamline penetration testing, enhance security ass
 - **WHOIS Integration**: Extracts and analyzes domain registration details to identify potential vulnerabilities.  
 - **Actionable Security Reports**: Generates detailed and structured reports to prioritize vulnerabilities.  
 - **Mitigation Recommendations**: Offers expert guidance to address and resolve identified risks.  
-- **Professional Audit Output**: Creates ready-to-share reports in PDF format.  
+- **Professional Audit Output**: Creates ready-to-share reports in PDF format.
+
+<p align="center">
+  <img src="doc/picture_2.PNG" />
+</p>
 
 ## 🔍 Purpose
 
@@ -50,6 +54,10 @@ DNS misconfigurations and exposed zone data can reveal sensitive information abo
 2. **Simplify** the auditing process with structured insights and AI-powered analysis.  
 3. **Empower** decision-makers with clear, professional reports and actionable steps.  
 
+
+<p align="center">
+  <img src="doc/picture_3.PNG" />
+</p>
 
 ## ⚙️ Tools & Technologies
 
