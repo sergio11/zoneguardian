@@ -6,7 +6,9 @@ With its advanced scanning capabilities, professional-grade reporting, and actio
 
 **Secure your DNS. Protect your infrastructure. Trust ZoneGuardian.** 🚀
 
-> ⚠️ **Disclaimer**: This tool is intended for ethical hacking and educational purposes only. Always ensure you have authorization before testing any systems.
+> ⚠️ **Disclaimer**: This tool has been developed **exclusively for educational and ethical hacking purposes**. It is designed to help users understand DNS security concepts and learn how to identify potential vulnerabilities in a controlled environment.  
+>  
+> **Unauthorized use of this tool on systems without explicit permission is strictly prohibited.** Always ensure you have the proper authorization before conducting any security analysis. The developer assumes no responsibility for misuse.
 
 🙏 I would like to express my sincere gratitude to [Santiago Hernández, a leading expert in Cybersecurity and Artificial Intelligence](https://www.udemy.com/user/shramos/). His outstanding course on **Cybersecurity and Ethical Hacking**, available on Udemy, was instrumental in the development of this project. The insights and techniques I gained from his course were invaluable in guiding my approach to cybersecurity practices. Thank you for sharing your knowledge and expertise!
 
