@@ -138,9 +138,15 @@ Ensure all dependencies are installed before running the script.
 * The --domains parameter is mandatory; the script will not execute without it.
 * Customize the output paths to prevent overwriting existing files.
 
-## 🛡️ Legal
+## ⚠️ Disclaimer  
 
-The author of Zoneguardian is not responsible for any misuse or damage caused by this tool. Use responsibly and comply with all local laws.
+**ZoneGuardian** was developed **exclusively for educational purposes** and as a **practical application of the knowledge acquired during my cybersecurity training**. Its primary objective is to **help security professionals and students understand DNS vulnerabilities** and **experiment within a controlled lab environment**.  
+
+This tool is intended **only for ethical security research, authorized penetration testing, and learning purposes**. **Unauthorized scanning, probing, or exploitation of external DNS infrastructures without explicit permission** is **strictly prohibited** and may violate **cybersecurity laws**.  
+
+All **testing and research conducted with ZoneGuardian were performed in an isolated cybersecurity lab environment** with **deliberately vulnerable systems** to ensure responsible and legal usage.  
+
+The developer **disclaims any responsibility for misuse** of this tool. It is the user's sole responsibility to ensure that their activities are **fully compliant with legal and ethical guidelines** when using **ZoneGuardian**.  
 
 ## Acknowledgements 🙏
 
